@@ -26,7 +26,7 @@ Wikimedia Enterprise ──▶ Dataville ──▶ one JSON response per article
 
 ## 60-second quickstart
 
-No key is needed to try it (anonymous rate limits apply). With a key, send `Authorization: Bearer $DATAVILLE_API_KEY`.
+No key is needed to try it: anonymous use allows 50 requests a day per IP address. A [free API key](https://app.dataville.com/api-keys) raises that; send it as `Authorization: Bearer $DATAVILLE_API_KEY`.
 
 ### cURL
 
@@ -166,9 +166,11 @@ A Next.js app that tracks 12 companies' Wikipedia articles for knowledge-base re
 git clone https://github.com/datavilleorg/dataville-wikimedia.git
 cd dataville-wikimedia
 npm install
-cp .env.example .env.local   # optional: add DATAVILLE_API_KEY
+cp .env.example .env.local   # add DATAVILLE_API_KEY (recommended)
 npm run dev
 ```
+
+Each page load looks up 12 articles. Without a key those come out of the 50-a-day anonymous allowance, so add a free key before you demo it.
 
 Open [http://localhost:3000](http://localhost:3000). The app has four panels:
 
@@ -246,4 +248,4 @@ The code in this repo is MIT-licensed; see [LICENSE](LICENSE).
 
 ## Start building
 
-**[Get an API key →](https://app.dataville.com/api-keys)** · [Explore Dataville MCP →](https://github.com/datavilleorg/dataville-mcp) · Questions: support@dataville.com
+**[Get a free API key →](https://app.dataville.com/api-keys)** · [Explore Dataville MCP →](https://github.com/datavilleorg/dataville-mcp) · Questions: support@dataville.com

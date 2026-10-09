@@ -100,7 +100,8 @@ export interface DatavilleWikiResponse {
 
 export interface DatavilleErrorResponse {
   status: string;
-  data: { error: string; code: string };
+  data?: { error: string; code: string };
+  message?: string;
 }
 
 export type ArticleResult = { payload: ArticlePayload } | { error: string };

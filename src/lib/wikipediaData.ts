@@ -405,8 +405,10 @@ export async function fetchDatavilleArticle(wikiTitle: string): Promise<ArticleR
     const res = await fetch(`/api/wiki/${encodeURIComponent(wikiTitle.replace(/_/g, ' '))}`);
     const json: DatavilleWikiResponse | DatavilleErrorResponse = await res.json();
     if (!res.ok || json.status !== 'success') {
-      const message = (json as DatavilleErrorResponse).data?.error;
-      return { error: message || FALLBACK_ERROR };
+      // Most errors carry their message in data.error; the rate limiter's 429
+      // uses a top-level message instead.
+      const err = json as DatavilleErrorResponse;
+      return { error: err.data?.error || err.message || FALLBACK_ERROR };
     }
     const payload = (json as DatavilleWikiResponse).data;
     articleCache[wikiTitle] = payload;
