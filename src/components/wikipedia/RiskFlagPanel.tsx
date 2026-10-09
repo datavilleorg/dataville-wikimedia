@@ -40,7 +40,7 @@ export default function RiskFlagPanel({ flags, onSelectEntity }: RiskFlagPanelPr
     <div>
       <div className="mb-4">
         <h2 className="text-lg font-bold text-maroon">Risk Flags</h2>
-        <p className="text-xs text-maroon/50">Entities with risk-indicator article categories</p>
+        <p className="text-xs text-maroon/50">Curated risk categories per company (demo data, not derived from the API)</p>
       </div>
 
       <div className="space-y-4 max-h-[420px] overflow-y-auto pr-1">

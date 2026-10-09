@@ -49,27 +49,22 @@ export interface TrackedEntity {
   monitored_sections: SectionType[];
 }
 
-export interface DatavilleWikiResponse {
-  status: string;
-  account_state: string;
-  data: {
-    id: string;
-    title: string;
-    body: string;
-    source: string;
-    language: string;
-    last_updated: string;
-    entities: string[];
-    metadata: {
-      url: string;
-      pageid: number | null;
-      categories: Array<{ ns: number; title: string }>;
-    };
-  };
-  usage: {
-    requests_remaining: number;
-    request_limit: number;
-  };
+// Shape of GET https://api.dataville.com/wiki/{keywords}. Only the fields this
+// demo reads are typed strictly; the API returns more (see the payload panel).
+export interface WikiLicense {
+  identifier: string;
+  name: string;
+  url: string;
+}
+
+export interface WikiAttribution {
+  source: string;
+  project: string;
+  license: WikiLicense;
+  attribution: string;
+  notice: string;
+  terms_of_use: string;
+  url: string;
 }
 
 export interface ArticlePayload {
@@ -78,14 +73,37 @@ export interface ArticlePayload {
   body: string;
   source: string;
   language: string;
+  /** When the article was last edited on Wikipedia. */
   last_updated: string;
   entities: string[];
   metadata: {
     url: string;
     pageid: number | null;
-    categories: Array<{ ns: number; title: string }>;
+    abstract: string | null;
+    description: string | null;
+    categories: Array<{ name: string; url: string }> | null;
+    main_entity: { identifier: string; url: string } | null;
+    license: WikiLicense[] | null;
+    project: string;
+    /** Which Wikimedia Enterprise feed last wrote this copy: 'snapshot', 'batch' or 'on_demand'. */
+    served_from: string | null;
+    [key: string]: unknown;
   };
+  attribution: WikiAttribution;
 }
+
+export interface DatavilleWikiResponse {
+  status: 'success';
+  account_state: string;
+  data: ArticlePayload;
+}
+
+export interface DatavilleErrorResponse {
+  status: string;
+  data: { error: string; code: string };
+}
+
+export type ArticleResult = { payload: ArticlePayload } | { error: string };
 
 export interface WikipediaStats {
   entities_monitored: number;

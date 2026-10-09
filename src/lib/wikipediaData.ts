@@ -1,4 +1,15 @@
-import { TrackedEntity, EditEvent, RiskFlag, ArticlePayload, DatavilleWikiResponse, WikipediaStats, SectionType, RiskLevel } from '@/types/wikipedia';
+import {
+  TrackedEntity,
+  EditEvent,
+  RiskFlag,
+  ArticlePayload,
+  ArticleResult,
+  DatavilleWikiResponse,
+  DatavilleErrorResponse,
+  WikipediaStats,
+  SectionType,
+  RiskLevel,
+} from '@/types/wikipedia';
 
 export const TRACKED_ENTITIES: TrackedEntity[] = [
   {
@@ -377,24 +388,31 @@ export function extractRiskFlags(): RiskFlag[] {
   return flags.sort((a, b) => order[a.risk_level] - order[b.risk_level]);
 }
 
-const DATAVILLE_API_BASE = 'https://app.dataville.com';
+const FALLBACK_ERROR =
+  "Couldn't load this article from Dataville. Try again in a moment; if it keeps happening, contact support@dataville.com.";
 
 const articleCache: Record<string, ArticlePayload> = {};
 
-export async function fetchDatavilleArticle(wikiTitle: string): Promise<ArticlePayload | null> {
-  if (articleCache[wikiTitle]) return articleCache[wikiTitle];
+/**
+ * Fetches one article through this app's /api/wiki route, which calls
+ * https://api.dataville.com/wiki/{title} server-side. On failure, returns the
+ * Dataville API's own error message, which is written for end users.
+ */
+export async function fetchDatavilleArticle(wikiTitle: string): Promise<ArticleResult> {
+  if (articleCache[wikiTitle]) return { payload: articleCache[wikiTitle] };
 
   try {
-    const searchTerm = encodeURIComponent(wikiTitle.replace(/_/g, ' '));
-    const res = await fetch(`${DATAVILLE_API_BASE}/wiki/${searchTerm}`);
-    if (!res.ok) return null;
-    const json: DatavilleWikiResponse = await res.json();
-    if (json.status !== 'success' || !json.data) return null;
-    const payload: ArticlePayload = json.data;
+    const res = await fetch(`/api/wiki/${encodeURIComponent(wikiTitle.replace(/_/g, ' '))}`);
+    const json: DatavilleWikiResponse | DatavilleErrorResponse = await res.json();
+    if (!res.ok || json.status !== 'success') {
+      const message = (json as DatavilleErrorResponse).data?.error;
+      return { error: message || FALLBACK_ERROR };
+    }
+    const payload = (json as DatavilleWikiResponse).data;
     articleCache[wikiTitle] = payload;
-    return payload;
+    return { payload };
   } catch {
-    return null;
+    return { error: FALLBACK_ERROR };
   }
 }
 

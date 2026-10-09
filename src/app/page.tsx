@@ -46,10 +46,10 @@ export default function WikipediaTrackerPage() {
             <div>
               <h1 className="text-2xl font-bold text-maroon">Wikipedia Knowledge Base Tracker</h1>
               <p className="mt-1 text-sm text-maroon/70">
-                Simulated real-time Wikipedia edit events for competitor intelligence and knowledge base refresh
+                Company knowledge-base tracking with source-linked Wikipedia data from the Dataville API
               </p>
               <p className="mt-0.5 text-xs text-maroon/50">
-                Data source: Dataville API · {TRACKED_ENTITIES.length} entities monitored
+                Live article data via Dataville · simulated edit stream · {TRACKED_ENTITIES.length} entities monitored
               </p>
             </div>
 
@@ -82,7 +82,7 @@ export default function WikipediaTrackerPage() {
             <p className="mt-1.5 text-sm text-maroon/70 leading-relaxed">
               Query Wikipedia articles through the Dataville API and receive structured, clean article content
               ready for knowledge base pipelines. Surface signals from founding year changes, product description
-              updates, controversy edits, and executive roster changes — exactly the payload shape you'd wire
+              updates, controversy edits, and executive roster changes — exactly the payload shape you&apos;d wire
               into a knowledge base refresh pipeline.
             </p>
           </div>
@@ -92,10 +92,10 @@ export default function WikipediaTrackerPage() {
               <h3 className="text-[11px] font-semibold uppercase tracking-widest text-maroon/40 mb-3">Why use Dataville</h3>
               <ul className="space-y-2.5 text-sm text-maroon/70">
                 {[
-                  'One API call returns clean, structured Wikipedia article content — no scraping or parsing',
-                  'Structured JSON payloads ready to plug into any knowledge base or RAG pipeline',
-                  'Risk signals surfaced automatically from article categories (antitrust, sanctions, disputes)',
-                  'Track competitor companies, executives, and geographies with a single API endpoint',
+                  'One API call returns clean, structured Wikipedia article content — no dumps, scraping or wikitext parsing',
+                  'Kept fresh from Wikimedia Enterprise snapshots plus hourly update batches, so you run no ingestion',
+                  'Every response carries its source URL, license and attribution, ready to cite',
+                  'The same key and response shape for SEC EDGAR and every other Dataville source',
                 ].map(item => (
                   <li key={item} className="flex gap-2.5">
                     <span className="mt-1.5 h-1 w-1 rounded-full bg-maroon/40 flex-shrink-0" />
@@ -108,15 +108,12 @@ export default function WikipediaTrackerPage() {
             <div className="px-6 py-5">
               <h3 className="text-[11px] font-semibold uppercase tracking-widest text-maroon/40 mb-3">Data source</h3>
               <div className="text-sm text-maroon/70 space-y-3">
-                <p>
-                  <span className="font-medium text-maroon">Dataville API</span> — real article content,
-                  categories, and metadata from English Wikipedia via the Dataville API, enriched with simulated edit events.
-                </p>
                 <ul className="space-y-2">
                   {[
-                    ['Signal types', 'Founding year · Products · Controversies · Executives'],
-                    ['Risk categories', 'Antitrust · Privacy · Labor disputes · SEC investigations · Export controls'],
-                    ['Payload', 'Exact response shape from the Dataville Wikipedia endpoint'],
+                    ['Live (Dataville API)', 'Article text, abstract, categories, last-edit time, license and attribution'],
+                    ['Simulated', 'The edit event stream and its signals, to show the webhook payload you would build'],
+                    ['Curated', 'Risk categories, hand-picked per company for this demo'],
+                    ['Payload', 'The unmodified response from GET api.dataville.com/wiki/{title}'],
                   ].map(([label, value]) => (
                     <li key={label} className="flex gap-2.5">
                       <span className="mt-1.5 h-1 w-1 rounded-full bg-maroon/40 flex-shrink-0" />
@@ -131,6 +128,15 @@ export default function WikipediaTrackerPage() {
                   className="inline-flex items-center gap-1 text-xs text-maroon hover:underline font-medium"
                 >
                   View Dataville API
+                  <FiExternalLink className="h-3 w-3" />
+                </a>
+                <a
+                  href="https://app.dataville.com/api-keys"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-4 inline-flex items-center gap-1 text-xs text-maroon hover:underline font-medium"
+                >
+                  Get an API key
                   <FiExternalLink className="h-3 w-3" />
                 </a>
               </div>

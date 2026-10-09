@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Dataville — Wikipedia Knowledge Base Tracker',
-  description: 'Wikipedia edit events for competitor intelligence and knowledge base refresh, powered by the Dataville API.',
+  description: 'Build with Wikimedia data through Dataville: a company knowledge-base tracker using live, source-linked Wikipedia data from the Dataville API.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
