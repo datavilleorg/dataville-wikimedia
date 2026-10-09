@@ -1,4 +1,4 @@
-# dataville-wiki-data-stream
+# dataville-wikimedia
 
 A standalone Next.js demo showing how to build a **Wikipedia knowledge base tracker** — structured, webhook-style edit events from tracked Wikipedia articles, ready to wire into a RAG pipeline or competitor intelligence feed.
 
@@ -30,8 +30,8 @@ The edit stream is simulated client-side (random intervals, realistic payloads).
 ## Getting started
 
 ```bash
-git clone https://github.com/datavilleorg/dataville-wiki-data-stream.git
-cd dataville-wiki-data-stream
+git clone https://github.com/datavilleorg/dataville-wikimedia.git
+cd dataville-wikimedia
 npm install
 npm run dev
 ```
