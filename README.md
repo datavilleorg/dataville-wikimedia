@@ -172,6 +172,8 @@ npm run dev
 
 Each page load looks up 12 articles. Without a key those come out of the 50-a-day anonymous allowance, so add a free key before you demo it.
 
+The server route only serves the companies listed in `TRACKED_ENTITIES` (see below), so if you deploy the demo publicly with your key, nobody can use it to look up arbitrary articles on your quota.
+
 Open [http://localhost:3000](http://localhost:3000). The app has four panels:
 
 - **Monitored Entities** shows each company's real last-edit time on Wikipedia, from Dataville.
