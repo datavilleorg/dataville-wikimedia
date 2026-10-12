@@ -4,7 +4,7 @@
 
 This repo shows how to use Wikimedia data through [Dataville](https://dataville.com): a 60-second API quickstart, an MCP example for agents, and a runnable app that tracks company articles to refresh a knowledge base.
 
-[Get an API key](https://app.dataville.com/api-keys) · [API docs](https://app.dataville.com) · [Dataville MCP](https://github.com/datavilleorg/dataville-mcp) · [Live demo](https://app.dataville.com/use-cases/wikipedia-tracker)
+[Get a free API key](https://app.dataville.com/api-keys) · [Docs](https://docs.dataville.com) · [API reference](https://docs.dataville.com/api-reference/overview) · [Dataville MCP](https://github.com/datavilleorg/dataville-mcp) · [Live demo](https://app.dataville.com/use-cases/wikipedia-tracker)
 
 ```
 Wikimedia Enterprise ──▶ Dataville ──▶ one JSON response per article ──▶ your app
@@ -181,7 +181,7 @@ Open [http://localhost:3000](http://localhost:3000). The app has four panels:
 - **Edit Stream (simulated)** shows example change events in the payload shape below.
 - **Risk Flags (curated)** shows hand-picked risk categories per company.
 
-**Stack:** [Next.js 14](https://nextjs.org/) (App Router), [Tailwind CSS](https://tailwindcss.com/), and the [Dataville API](https://app.dataville.com).
+**Stack:** [Next.js 14](https://nextjs.org/) (App Router), [Tailwind CSS](https://tailwindcss.com/), and the [Dataville API](https://docs.dataville.com).
 
 ### Customizing tracked entities
 
@@ -241,6 +241,15 @@ curl "https://api.dataville.com/edgar/NVDA"    # authoritative: filings, XBRL fi
 ```
 
 See [`company-intelligence-agent`](https://github.com/datavilleorg/company-intelligence-agent) for a full example that keeps each claim tagged with its source, and [`dataville-sec-edgar`](https://github.com/datavilleorg/dataville-sec-edgar) for the EDGAR package.
+
+## Learn more
+
+- [Quickstart: API](https://docs.dataville.com/quickstart): create a key and make your first request
+- [Connect an AI tool](https://docs.dataville.com/ai-tools): Claude, Cursor, Windsurf or VS Code via the hosted MCP server
+- [Data sources](https://docs.dataville.com/data-sources): every source, how to search it, and its license
+- [Response format](https://docs.dataville.com/response-format): the JSON shape every source returns
+- [Query with SQL](https://docs.dataville.com/query-with-sql): read-only SQL across the stored datasets
+- [Usage limits](https://docs.dataville.com/api-reference/usage-limits) and [plans and credits](https://docs.dataville.com/plans-and-credits)
 
 ## Attribution
 
