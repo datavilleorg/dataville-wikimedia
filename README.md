@@ -4,7 +4,7 @@
 
 This repo shows how to use Wikimedia data through [Dataville](https://dataville.com): a 60-second API quickstart, an MCP example for agents, and a runnable app that tracks company articles to refresh a knowledge base.
 
-[Get a free API key](https://app.dataville.com/api-keys) · [Docs](https://docs.dataville.com) · [API reference](https://docs.dataville.com/api-reference/overview) · [Dataville MCP](https://github.com/datavilleorg/dataville-mcp) · [Live demo](https://app.dataville.com/use-cases/wikipedia-tracker)
+[Get a free API key](https://app.dataville.com/api-keys) · [Docs](https://docs.dataville.com) · [API reference](https://docs.dataville.com/api-reference/overview) · [Dataville MCP](https://github.com/datavilleorg/dataville-mcp) · [Live demo](https://app.dataville.com/use-cases/wikipedia-tracker) · [All demos](https://app.dataville.com/demos)
 
 ```
 Wikimedia Enterprise ──▶ Dataville ──▶ one JSON response per article ──▶ your app
