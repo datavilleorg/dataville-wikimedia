@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import { TRACKED_ENTITIES } from '@/lib/wikipediaData';
+import { useEntityPayloads } from '@/hooks/useWikipediaData';
 import { EditEvent, RiskFlag } from '@/types/wikipedia';
 
 interface EntityMonitorProps {
@@ -12,16 +13,13 @@ interface EntityMonitorProps {
 }
 
 export default function EntityMonitor({ editEvents, riskFlags, selectedEntity, onSelectEntity }: EntityMonitorProps) {
+  const { payloads } = useEntityPayloads();
+
   const entityStats = useMemo(() => {
     const editCounts: Record<string, number> = {};
-    const lastEdits: Record<string, string> = {};
-
     for (const event of editEvents) {
       const title = event.article.entity_name;
       editCounts[title] = (editCounts[title] ?? 0) + 1;
-      if (!lastEdits[title] || event.timestamp > lastEdits[title]) {
-        lastEdits[title] = event.timestamp;
-      }
     }
 
     const riskCounts: Record<string, number> = {};
@@ -32,10 +30,11 @@ export default function EntityMonitor({ editEvents, riskFlags, selectedEntity, o
     return TRACKED_ENTITIES.map(entity => ({
       entity,
       edits: editCounts[entity.name] ?? 0,
-      lastEdit: lastEdits[entity.name] ?? null,
+      // Real: when the article was last edited on Wikipedia, from Dataville.
+      lastEdit: payloads.get(entity.wiki_title)?.last_updated ?? null,
       riskCount: riskCounts[entity.name] ?? 0,
     })).sort((a, b) => b.edits - a.edits);
-  }, [editEvents, riskFlags]);
+  }, [editEvents, riskFlags, payloads]);
 
   function formatTimeAgo(isoString: string | null): string {
     if (!isoString) return '—';
@@ -43,14 +42,18 @@ export default function EntityMonitor({ editEvents, riskFlags, selectedEntity, o
     const diffM = Math.floor(diffMs / 60000);
     if (diffM < 1) return 'just now';
     if (diffM < 60) return `${diffM}m ago`;
-    return `${Math.floor(diffM / 60)}h ago`;
+    const diffH = Math.floor(diffM / 60);
+    if (diffH < 48) return `${diffH}h ago`;
+    return `${Math.floor(diffH / 24)}d ago`;
   }
 
   return (
     <div>
       <div className="mb-4">
         <h2 className="text-lg font-bold text-maroon">Monitored Entities</h2>
-        <p className="text-xs text-maroon/50">Click a company to view its article payload</p>
+        <p className="text-xs text-maroon/50">
+          Last Wikipedia edit is live from Dataville; edit counts come from the simulated stream. Click a company to view its payload.
+        </p>
       </div>
 
       <div className="space-y-1.5 max-h-[420px] overflow-y-auto pr-1">
@@ -78,7 +81,7 @@ export default function EntityMonitor({ editEvents, riskFlags, selectedEntity, o
                 )}
               </div>
               <p className={`text-[10px] ${selectedEntity === entity.wiki_title ? 'text-white/60' : 'text-maroon/50'}`}>
-                {entity.category} · last edit {formatTimeAgo(lastEdit)}
+                {entity.category} · edited on Wikipedia {formatTimeAgo(lastEdit)}
               </p>
             </div>
             <div className="text-right flex-shrink-0">
@@ -86,7 +89,7 @@ export default function EntityMonitor({ editEvents, riskFlags, selectedEntity, o
                 {edits}
               </p>
               <p className={`text-[10px] ${selectedEntity === entity.wiki_title ? 'text-white/60' : 'text-maroon/50'}`}>
-                edits
+                sim. edits
               </p>
             </div>
           </div>

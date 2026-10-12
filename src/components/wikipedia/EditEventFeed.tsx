@@ -46,13 +46,13 @@ export default function EditEventFeed({ events, isLive, onToggleLive }: EditEven
     <div>
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-lg font-bold text-maroon">Live Edit Stream</h2>
-          <p className="text-xs text-maroon/50">Simulated edit events for articles tracked via the Dataville API</p>
+          <h2 className="text-lg font-bold text-maroon">Edit Stream (simulated)</h2>
+          <p className="text-xs text-maroon/50">Simulated events showing the payload shape; not real Wikipedia edits</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5 text-xs text-maroon/60">
             <span className={`inline-block w-2 h-2 rounded-full ${isLive ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />
-            {isLive ? 'Live' : 'Paused'}
+            {isLive ? 'Running' : 'Paused'}
           </div>
           <button
             onClick={onToggleLive}

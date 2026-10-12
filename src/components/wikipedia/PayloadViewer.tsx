@@ -12,7 +12,7 @@ interface PayloadViewerProps {
 
 export default function PayloadViewer({ selectedEntity, onSelectEntity }: PayloadViewerProps) {
   const [copied, setCopied] = useState(false);
-  const { payload } = useArticlePayload(selectedEntity);
+  const { payload, error } = useArticlePayload(selectedEntity);
 
   const activeEntity = TRACKED_ENTITIES.find(e => e.wiki_title === selectedEntity);
   const endpointSlug = activeEntity
@@ -57,9 +57,9 @@ export default function PayloadViewer({ selectedEntity, onSelectEntity }: Payloa
             </code>
           </div>
           <div className="flex items-center gap-2">
-            {activeEntity && (
+            {payload && (
               <a
-                href={`https://en.wikipedia.org/wiki/${activeEntity.wiki_title}`}
+                href={payload.metadata.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-[10px] text-maroon/50 hover:text-maroon transition-colors"
@@ -82,16 +82,35 @@ export default function PayloadViewer({ selectedEntity, onSelectEntity }: Payloa
           <pre className="bg-[#1e1e2e] text-[#cdd6f4] p-5 text-xs font-mono leading-relaxed overflow-x-auto max-h-[440px] overflow-y-auto">
 {JSON.stringify(payload, null, 2)}
           </pre>
+        ) : error ? (
+          <div className="bg-[#1e1e2e] h-48 flex items-center justify-center px-6">
+            <p className="text-xs text-[#f5c2c2] text-center max-w-md">{error}</p>
+          </div>
         ) : (
           <div className="bg-[#1e1e2e] h-48 flex items-center justify-center">
             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#cdd6f4]" />
           </div>
         )}
 
-        {/* Attribution footer */}
-        <div className="px-4 py-2 bg-[#f5f0eb] border-t border-[#E5D5C5] flex items-center justify-between">
-          <span className="text-[10px] text-maroon/40">Source: Wikipedia via Dataville API</span>
-          <span className="text-[10px] text-maroon/40">app.dataville.com</span>
+        {/* Attribution footer: comes from the response, so it stays correct per article */}
+        <div className="px-4 py-2 bg-[#f5f0eb] border-t border-[#E5D5C5] flex flex-wrap items-center justify-between gap-2">
+          <span className="text-[10px] text-maroon/50">
+            {payload ? (
+              <>
+                {payload.attribution.attribution} ·{' '}
+                <a href={payload.attribution.license.url} target="_blank" rel="noopener noreferrer" className="underline">
+                  {payload.attribution.license.identifier}
+                </a>
+              </>
+            ) : (
+              'Source: Wikipedia via the Dataville API'
+            )}
+          </span>
+          <span className="text-[10px] text-maroon/40">
+            {payload
+              ? `Last edited on Wikipedia ${new Date(payload.last_updated).toLocaleDateString()}`
+              : 'api.dataville.com'}
+          </span>
         </div>
       </div>
     </div>
